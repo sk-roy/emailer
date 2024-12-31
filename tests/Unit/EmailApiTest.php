@@ -42,7 +42,7 @@ class EmailApiTest extends TestCase
         $response = $this->post('/api/emails', $payload);
 
         $this->assertEquals(false, $response->json('success'));
-        $this->assertEquals(422, $response->json('status_code'));
+        $this->assertEquals(422, $response->json('error_code'));
         $this->assertDatabaseMissing('mail-logs', ['email' => $payload['email']]);
     }
 
@@ -77,10 +77,10 @@ class EmailApiTest extends TestCase
                     ],
                     'message',
                     'success',
-                    'status_code',
+                    'error_code',
                  ]);
 
-        $this->assertEquals(200, $response->json('status_code'));
+        $this->assertEquals(200, $response->json('error_code'));
         $this->assertCount(20, $response->json('data.data'));
     }
 
@@ -115,7 +115,7 @@ class EmailApiTest extends TestCase
                     ],
                     'message',
                     'success',
-                    'status_code',
+                    'error_code',
                  ]);
 
         // Ensure only 10 results are returned in the first page

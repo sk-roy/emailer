@@ -4,25 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendEmailJob;
 use App\Models\Email;
+use App\Models\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Mail;
-use App\Mail\TestMail;
 
 class EmailController extends Controller
 {
     public function sendEmail(Request $request)
     {
         Log::info('Add email to the queue.', ['request' => request()->all()]);
-        $response = [
-            'data' => [],
-            'message' => '',
-            'success' => false,
-            'status_code' => 500,
-        ];
+        $response = new ApiResponse();
 
         try {
             $request->validate([
@@ -50,43 +45,42 @@ class EmailController extends Controller
 
             SendEmailJob::dispatch($mail, $data);
 
-            $response['success'] = true;
-            $response['message'] = 'Email queued successfully';
-            $response['status_code'] = 200;
+
+            $response->setMessage('Email queued successfully.');
+            $response->setSuccess(true);
+            $response->setErrorCode(200);
             
         } catch (ValidationException $e) {
-            Log::error('Validation Error:', ['errors' => $e->errors()]);        
-            $response['success'] = false;
-            $response['message'] = $e->getMessage();
-            $response['status_code'] = 422;
-         } catch (\Exception $e) {
-            $response['success'] = false;
-            $response['message'] = 'An error occurred while processing your request';
-            $response['status_code'] = 500;
+            Log::error('Validation Error:', ['errors' => $e->errors()]); 
 
-            Log::error($response['message'], [
+            $response->setMessage($e->getMessage());
+            $response->setSuccess(false);
+            $response->setErrorCode(422);
+         } catch (\Exception $e) {
+            
+            $response->setMessage('An error occurred while processing your request');
+            $response->setSuccess(false);
+            $response->setErrorCode(500);
+
+            Log::error($response->getMessage(), [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
         }
 
-        Log::info($response['message'], ['response' => $response]);
+        Log::info($response->getMessage(), ['response' => $response]);
         return response()->json($response);
     }
 
     public function getEmailList(Request $request)
     {
         Log::info('Retrive emails.', ['request' => request()->all()]);
-        $response = [
-            'data' => [],
-            'message' => '',
-            'success' => false,
-            'status_code' => 500,
-        ];
+        $response = new ApiResponse();
 
         try {
             $perPage = $request->get('per_page', 10);
 
+            $emails = [];
             $emails = Email::select([
                 'subject',
                 'email',
@@ -94,27 +88,27 @@ class EmailController extends Controller
                 'attachment_filename',
                 'status'
             ])->paginate($perPage);
+            $emailsArray = $emails->toArray();
             
-            $response['data'] = $emails;
-            $response['success'] = true;
-            $response['message'] = 'Email list retrieved successfully.';
-            $response['status_code'] = 200;
+            $response->setData($emailsArray);
+            $response->setMessage('Email list retrieved successfully.');
+            $response->setSuccess(true);
+            $response->setErrorCode(200);
 
-            Log::info($response['message'], ['per_page' => $perPage]);
+            Log::info($response->getMessage(), ['per_page' => $perPage]);
 
-        } catch (\Exception $e) {            
-            $response['data'] = [];
-            $response['success'] = false;
-            $response['message'] = 'Failed to retrieve email list.';
-            $response['status_code'] = 500;
+        } catch (\Exception $e) {  
+            $response->setMessage('Failed to retrieve email list.');
+            $response->setSuccess(false);
+            $response->setErrorCode(500);
 
-            Log::error($response['message'], [
+            Log::error($response->getMessage(), [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
         }
 
-        Log::info($response['message'], ['response' => $response]);
+        Log::info($response->getMessage(), ['response' => $response]);
         return response()->json($response);
     }
 

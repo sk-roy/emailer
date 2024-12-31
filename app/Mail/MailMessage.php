@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Attachment;
 
-class TestMail extends Mailable
+class MailMessage extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -41,7 +41,7 @@ class TestMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'test-mail',
+            view: 'mail-message',
         );
     }
    
@@ -52,7 +52,7 @@ class TestMail extends Mailable
             return $this->attachData(
                             base64_decode($this->data['attachment']),
                             $this->data['attachment_filename'],
-                            ['mime' => 'application/pdf']
+                            ['mime' => mime_content_type($this->data['attachment_filename'])]
                         );
         }
         return ;

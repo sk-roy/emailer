@@ -5,6 +5,5 @@
 </head>
 <body>
     <p>{{ $data['message'] }}</p>
-    <p>Thank you</p>
 </body>
 </html>

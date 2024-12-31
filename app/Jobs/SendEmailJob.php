@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\TestMail;
+use App\Mail\MailMessage;
 use App\Models\Email;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,7 +34,7 @@ class SendEmailJob implements ShouldQueue
     public function handle()
     {
         try {            
-            Mail::to($this->data['email'])->send(new TestMail($this->data));
+            Mail::to($this->data['email'])->send(new MailMessage($this->data));
             $this->mail->update(['status' => 'sent']);
             Log::info('Email job processed successfully', ['Email' => $this->data['email']]);
             
