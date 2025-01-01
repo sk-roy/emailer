@@ -13,26 +13,25 @@ class Rental
     private $daysRented;
 
     /**
-     * @var int
+     * @var IBasePriceCode
      */
-    private $priceCode;
+    private $priceCodeObj;
 
 
     /**
      * @param Movie $movie
      * @param int $daysRented
-     * @param int $priceCode
      */
     public function __construct(Movie $movie, int $daysRented) {
         $this->movie = $movie;
         $this->daysRented = $daysRented;
-        $this->priceCode = PriceCodeFactory::create($movie->priceCode());
+        $this->priceCodeObj = PriceCodeFactory::create($movie->priceCode());
     }
 
     /**
      * @return Movie
      */
-    public function movie()
+    public function movie(): Movie
     {
         return $this->movie;
     }
@@ -40,7 +39,7 @@ class Rental
     /**
      * @return int
      */
-    public function daysRented()
+    public function daysRented(): int
     {
         return $this->daysRented;
     }
@@ -51,7 +50,7 @@ class Rental
      */
     public function getAmount(): float 
     {
-        return $this->priceCode->getAmount($this->daysRented);
+        return $this->priceCodeObj->getAmount($this->daysRented);
     }
 
 
@@ -60,6 +59,6 @@ class Rental
      */
     public function getFrequentRenterPoints(): int 
     {
-        return $this->priceCode->getFrequentRenterPoints($this->daysRented);
+        return $this->priceCodeObj->getFrequentRenterPoints($this->daysRented);
     }
 }

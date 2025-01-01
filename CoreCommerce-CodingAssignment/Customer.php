@@ -61,7 +61,7 @@ class Customer
     {
         $frequentRenterPoints = 0;
         foreach ($this->getRentals() as $rental) {
-                $frequentRenterPoints += $rental->getFrequentRenterPoints();
+            $frequentRenterPoints += $rental->getFrequentRenterPoints();
         }
         return $frequentRenterPoints;
     }
