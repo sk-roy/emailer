@@ -4,42 +4,34 @@ require_once('Movie.php');
 require_once('Rental.php');
 require_once('Customer.php');
 require_once('Constants.php');
-require_once('BookShop.php');
+require_once('MovieShop.php');
+require_once('BasePriceCode.php');
+require_once('PriceCodeFactory.php');
+require_once('IBasePriceCode.php');
 
 
-$bookShop = new BookShop();
+$MovieShop = new MovieShop();
+$MovieShop->addMovie(new Movie('Back to the Future', PriceCodes::CHILDRENS));
+$MovieShop->addMovie(new Movie('Office Space', PriceCodes::REGULAR));
+$MovieShop->addMovie(new Movie('The Big Lebowski', PriceCodes::NEW_RELEASE));
+$MovieShop->addMovie(new Movie('Pushpa 2', PriceCodes::BLOCKBUSTER));
 
-//Generate Stock of Movies
-$bookShop->addMovie(new Movie(
-        'Back to the Future',
-        (int)PriceCodes::CHILDRENS
-));
-
-$bookShop->addMovie(new Movie(
-    'Office Space',
-    (int)PriceCodes::REGULAR
-));
-
-$bookShop->addMovie(new Movie(
-    'The Big Lebowski',
-    (int) PriceCodes::NEW_RELEASE
-));
-
-
-// Rental Movies
-$rental1 = new Rental( $bookShop->getMovies()[0], 4, 1.5, 1.5, 3);
-$rental2 = new Rental( $bookShop->getMovies()[1], 3, 2, 1.5, 2);
-$rental3 = new Rental( $bookShop->getMovies()[2], 5, 0, 3, 0);
+$rental1 = new Rental($MovieShop->getMovies()[0], 4);
+$rental2 = new Rental($MovieShop->getMovies()[1], 3);
+$rental3 = new Rental($MovieShop->getMovies()[2], 5);
+$rental4 = new Rental($MovieShop->getMovies()[3], 3);
 
 
 $customer = new Customer('Joe Schmoe');
 $customer->addRental($rental1);
 $customer->addRental($rental2);
 $customer->addRental($rental3);
+$customer->addRental($rental4);
 
 $customer2 = new Customer('Ross geller');
-echo $bookShop->statement($customer);
-//echo $bookShop->htmlStatement($customer);
+
+echo $MovieShop->statement($customer);
+echo $MovieShop->htmlStatement($customer);
 
 
 //TODO: Generate Price Code factory to return pricecode class with DefaultPrice, PricePerDay and FreeRentedDays for Given PriceCode

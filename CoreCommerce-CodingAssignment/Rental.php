@@ -15,34 +15,18 @@ class Rental
     /**
      * @var int
      */
-    private $defaultRent;
-
-    /**
-     * @var int
-     */
-    private $rentPerDay;
-
-
-    /**
-     * @var int
-     */
-    private $freeRentPeriod;
+    private $priceCode;
 
 
     /**
      * @param Movie $movie
      * @param int $daysRented
-     * @param int $defaultRent
-     * @param int $rentPerDay
-     * @param int $freeRentPeriod
+     * @param int $priceCode
      */
-    public function __construct(Movie $movie, $daysRented, $defaultRent, $rentPerDay, $freeRentPeriod)
-    {
+    public function __construct(Movie $movie, int $daysRented) {
         $this->movie = $movie;
         $this->daysRented = $daysRented;
-        $this->defaultRent = $defaultRent;
-        $this->rentPerDay = $rentPerDay;
-        $this->freeRentPeriod = $freeRentPeriod;
+        $this->priceCode = PriceCodeFactory::create($movie->priceCode());
     }
 
     /**
@@ -61,47 +45,21 @@ class Rental
         return $this->daysRented;
     }
 
+
     /**
-     * @return int
+     * @return float
      */
-    public function defaultRent()
+    public function getAmount(): float 
     {
-        return $this->defaultRent;
+        return $this->priceCode->getAmount($this->daysRented);
     }
+
 
     /**
      * @return int
      */
-    public function rentPerDay()
+    public function getFrequentRenterPoints(): int 
     {
-        return $this->rentPerDay;
-    }
-
-    /**
-     * @return int
-     */
-    public function freeRentPeriod()
-    {
-        return $this->freeRentPeriod;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAmount() {
-        $thisAmount = $this->defaultRent();
-        if ($this->daysRented() > $this->freeRentPeriod()) {
-            $thisAmount += ($this->daysRented() - $this->freeRentPeriod()) * $this->rentPerDay();
-        }
-
-        return $thisAmount ?? 0;
-    }
-
-    public function getFrequentRenterPoints() {
-        $frequentRenterPoints = 1;
-        if ($this->movie()->priceCode() === (int) PriceCodes::NEW_RELEASE && $this->daysRented() > 1) {
-            $frequentRenterPoints = 2;
-        }
-        return $frequentRenterPoints;
+        return $this->priceCode->getFrequentRenterPoints($this->daysRented);
     }
 }

@@ -1,6 +1,6 @@
 <?php 
 
-class BookShop {
+class MovieShop {
 
      /**
      * @var Movies[]
