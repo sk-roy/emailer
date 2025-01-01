@@ -6,17 +6,33 @@ use App\Jobs\SendEmailJob;
 use App\Models\Email;
 use App\Models\ApiResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use Mail;
 
+/**
+ *  
+ * APIs for managing emails, including sending and retrieving email records.
+ * 
+ */
 class EmailController extends Controller
 {
+    /**
+     * Send Email
+     * 
+     * Add an email to the queue for sending.
+     * 
+     * @endpoint POST /emails
+     * 
+     * @bodyParam subject string required The subject of the email. Example: "Meeting Reminder"
+     * @bodyParam email string required The recipient's email address. Example: "user@example.com"
+     * @bodyParam message string required The body of the email. Example: "Don't forget our meeting tomorrow at 10 AM."
+     * @bodyParam attachment string optional A base64 encoded string of the email attachment. Example: "dGVzdCBhdHRhY2htZW50IGNvbnRlbnQ="
+     * @bodyParam attachment_filename string required_with:attachment The filename of the attachment. Example: "file.pdf"
+     *
+     */
     public function sendEmail(Request $request)
     {
-        Log::info('Add email to the queue.', ['request' => request()->all()]);
+        Log::debug('Add email to the queue.', ['request' => $request->all()]);
         $response = new ApiResponse();
 
         try {
@@ -36,10 +52,10 @@ class EmailController extends Controller
                 'attachment_filename' => $data['attachment_filename'] ?? null,
                 'status' => 'in-queue',
             ]);
-            
-            if ($request->hasFile('attachment')) {
+
+            if ($request->has('attachment')) {
                 $fileData = base64_decode($data['attachment']);
-                $data['attachment_path'] = $request->file('attachment')->store('attachments');
+                $data['attachment_path'] = Storage::put('attachments', $fileData);
             }
 
             SendEmailJob::dispatch($mail, $data);
@@ -47,16 +63,14 @@ class EmailController extends Controller
             $response->setMessage('Email queued successfully.');
             $response->setSuccess(true);
             $response->setErrorCode(200);
-            
         } catch (ValidationException $e) {
-            Log::error('Validation Error:', ['errors' => $e->errors()]); 
+            Log::error('Validation Error:', ['errors' => $e->errors()]);
 
             $response->setMessage($e->getMessage());
             $response->setSuccess(false);
             $response->setErrorCode(422);
-         } catch (\Exception $e) {
-            
-            $response->setMessage('An error occurred while processing your request');
+        } catch (\Exception $e) {
+            $response->setMessage('An error occurred while processing your request.');
             $response->setSuccess(false);
             $response->setErrorCode(500);
 
@@ -66,36 +80,43 @@ class EmailController extends Controller
             ]);
         }
 
-        Log::info($response->getMessage(), ['response' => $response]);
+        Log::debug($response->getMessage(), ['response' => $response]);
         return response()->json($response);
     }
 
+    /**
+     * Get Email list with Status
+     * 
+     * Retrieve a paginated list of emails.
+     * 
+     * @queryParam per_page int optional Number of emails to retrieve per page. Defaults to 10. Example: 15
+     * @queryParam page int optional Number of emails to retrieve the specific page. Defaults to 1.
+     * 
+     * @apiResourceModel App\Models\Email
+     */
     public function getEmailList(Request $request)
     {
-        Log::info('Retrive emails.', ['request' => request()->all()]);
+        Log::debug('Retrieve emails.', ['request' => $request->all()]);
         $response = new ApiResponse();
 
         try {
             $perPage = $request->get('per_page', 10);
 
-            $emails = [];
             $emails = Email::select([
                 'subject',
                 'email',
                 'message',
                 'attachment_filename',
-                'status'
+                'status',
             ])->paginate($perPage);
-            $emailsArray = $emails->toArray();
-            
-            $response->setData($emailsArray);
+
+            $response->setData($emails);
             $response->setMessage('Email list retrieved successfully.');
             $response->setSuccess(true);
             $response->setErrorCode(200);
 
-            Log::info($response->getMessage(), ['per_page' => $perPage]);
-
-        } catch (\Exception $e) {  
+            Log::debug($response->getMessage(), ['per_page' => $perPage]);
+        } catch (\Exception $e) {
             $response->setMessage('Failed to retrieve email list.');
             $response->setSuccess(false);
             $response->setErrorCode(500);
@@ -106,9 +127,7 @@ class EmailController extends Controller
             ]);
         }
 
-        Log::info($response->getMessage(), ['response' => $response]);
+        Log::debug($response->getMessage(), ['response' => $response]);
         return response()->json($response);
     }
-
-
 }

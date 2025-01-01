@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: 'Emailer API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+paths:
+  /api/emails:
+    post:
+      summary: 'Send an email'
+      operationId: sendAnEmail
+      description: 'Add an email to the queue for sending.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                  description: 'The subject of the email.'
+                  example: '"Meeting Reminder"'
+                  nullable: false
+                email:
+                  type: string
+                  description: "The recipient's email address."
+                  example: '"user@example.com"'
+                  nullable: false
+                message:
+                  type: string
+                  description: 'The body of the email.'
+                  example: '"Don''t forget our meeting tomorrow at 10 AM."'
+                  nullable: false
+                attachment:
+                  type: string
+                  description: 'optional A base64 encoded string of the email attachment.'
+                  example: '"dGVzdCBhdHRhY2htZW50IGNvbnRlbnQ="'
+                  nullable: false
+                attachment_filename:
+                  type: string
+                  description: 'required_with:attachment The filename of the attachment.'
+                  example: '"file.pdf"'
+                  nullable: false
+              required:
+                - subject
+                - email
+                - message
+      security: []
+    get:
+      summary: 'Get email list'
+      operationId: getEmailList
+      description: 'Retrieve a paginated list of emails.'
+      parameters:
+        -
+          in: query
+          name: per_page
+          description: 'optional Number of emails to retrieve per page. Defaults to 10.'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'optional Number of emails to retrieve per page. Defaults to 10.'
+            example: 15
+            nullable: false
+        -
+          in: query
+          name: page
+          description: 'optional Number of emails to retrieve the specific page. Defaults to 1.'
+          example: 18
+          required: false
+          schema:
+            type: integer
+            description: 'optional Number of emails to retrieve the specific page. Defaults to 1.'
+            example: 18
+            nullable: false
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+tags:
+  -
+    name: Endpoints
+    description: ''

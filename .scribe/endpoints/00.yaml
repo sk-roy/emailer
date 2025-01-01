@@ -1,0 +1,152 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/emails
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Send an email'
+      description: 'Add an email to the queue for sending.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      subject:
+        name: subject
+        description: 'The subject of the email.'
+        required: true
+        example: '"Meeting Reminder"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      email:
+        name: email
+        description: "The recipient's email address."
+        required: true
+        example: '"user@example.com"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      message:
+        name: message
+        description: 'The body of the email.'
+        required: true
+        example: '"Don''t forget our meeting tomorrow at 10 AM."'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      attachment:
+        name: attachment
+        description: 'optional A base64 encoded string of the email attachment.'
+        required: false
+        example: '"dGVzdCBhdHRhY2htZW50IGNvbnRlbnQ="'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      attachment_filename:
+        name: attachment_filename
+        description: 'required_with:attachment The filename of the attachment.'
+        required: false
+        example: '"file.pdf"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      subject: '"Meeting Reminder"'
+      email: '"user@example.com"'
+      message: '"Don''t forget our meeting tomorrow at 10 AM."'
+      attachment: '"dGVzdCBhdHRhY2htZW50IGNvbnRlbnQ="'
+      attachment_filename: '"file.pdf"'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/emails
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get email list'
+      description: 'Retrieve a paginated list of emails.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      per_page:
+        name: per_page
+        description: 'optional Number of emails to retrieve per page. Defaults to 10.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      page:
+        name: page
+        description: 'optional Number of emails to retrieve the specific page. Defaults to 1.'
+        required: false
+        example: 18
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      per_page: 15
+      page: 18
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "Server Error"
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
