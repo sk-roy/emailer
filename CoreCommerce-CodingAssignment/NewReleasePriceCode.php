@@ -1,8 +1,13 @@
 <?php
 
 class NewReleasePriceCode extends BasePriceCode {
+
     public function __construct() {
-        parent::__construct(0.0, 3.0, 0);
+        $this->defaultRent = 0;
+        $this->rentPerDay = 3.0;
+        $this->freeRentDays = 0;
+        
+        parent::__construct();
     }
 
     public function getFrequentRenterPoints(int $daysRented): int {

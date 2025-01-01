@@ -2,6 +2,10 @@
 
 class ChildrenPriceCode extends BasePriceCode {
     public function __construct() {
-        parent::__construct(1.5, 1.5, 3);
+        $this->defaultRent = 1.5;
+        $this->rentPerDay = 1.5;
+        $this->freeRentDays = 3;
+
+        parent::__construct();
     }
 }

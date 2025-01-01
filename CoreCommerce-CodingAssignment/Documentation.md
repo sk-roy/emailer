@@ -43,7 +43,7 @@ Creates price code instances based on the provided code.
 
 ## Movie Class
 
-Represents a movie with its name and price code.
+Represents a movie with its name and price code. We have moved the price code constants to a new file Constant.php. The constants is used globally.
 # Properties
 1. name (string): Name of the movie.
 2. priceCode (int): Pricing code for the movie.
@@ -104,3 +104,26 @@ Handles movie inventory and generates customer rental statements.
 4. Generate Statements:
     a. Use statement() for plain-text statements.
     b. Use htmlStatement() for HTML-formatted statements.
+
+
+## Purpose of Implementing Factory Design Pattern.
+
+1. Centralized Object Creation: The PriceCodeFactory centralizes the creation of price code objects (ChildrenPriceCode, RegularPriceCode, NewReleasePriceCode). This eliminates the need to hardcode object creation logic in multiple places, promoting consistency and reducing code duplication.
+2. Scalability: Adding a new price code (e.g., HolidayPriceCode) requires only:
+    a. Defining a new class inheriting from BasePriceCode.
+    b. Updating the factory to recognize the new price code.
+    c. Adding a new constant property to PriceCodes class
+3. Improved Maintainability: Encapsulating pricing logic within dedicated classes makes it easier to maintain and update specific rules. Any changes to pricing logic are localized within the respective PriceCode class, reducing the risk of breaking other parts of the application.
+4. Maintainability: Using the PriceCodeFactory, object creation logic is centralized, reducing duplication and potential errors.
+5. Customization: Specific behaviors, like extra frequent renter points for new releases, are easily implemented in the respective class.
+
+
+## Purpose of MovieShop
+
+The MovieShop class acts as the central manager for inventory and rental operations. It facilitates the addition of movies, manages customer interactions, and generates rental statements, ensuring a streamlined and organized approach to handling business operations. By centralizing these responsibilities, the MovieShop class encapsulates core functionalities, making the system easier to maintain and extend.
+In future development, adding new shop types will be straightforward, as the centralized structure provides a clear foundation for implementing additional features or shop variants.
+
+
+## Two Statement Methods
+
+The statement() method generates plain-text summaries, ideal for console outputs or logs. The htmlStatement() method produces HTML-formatted statements. This separation allows flexibility in output formats to suit different use cases.

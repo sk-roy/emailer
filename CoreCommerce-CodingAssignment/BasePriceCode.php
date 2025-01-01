@@ -8,10 +8,8 @@ class BasePriceCode implements IBasePriceCode {
     protected float $rentPerDay;
     protected int $freeRentDays;
 
-    public function __construct(float $defaultRent, float $rentPerDay, int $freeRentDays) {
-        $this->defaultRent = $defaultRent;
-        $this->rentPerDay = $rentPerDay;
-        $this->freeRentDays = $freeRentDays;
+    public function __construct() {
+
     }
 
     /**
