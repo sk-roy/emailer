@@ -39,12 +39,10 @@ class EmailController extends Controller
             
             if ($request->hasFile('attachment')) {
                 $fileData = base64_decode($data['attachment']);
-                Storage::disk('public')->put($data['attachment_filename'], $fileData);
                 $data['attachment_path'] = $request->file('attachment')->store('attachments');
             }
 
             SendEmailJob::dispatch($mail, $data);
-
 
             $response->setMessage('Email queued successfully.');
             $response->setSuccess(true);

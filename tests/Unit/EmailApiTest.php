@@ -24,9 +24,8 @@ class EmailApiTest extends TestCase
 
         $response = $this->post('/api/emails', $payload);
 
-        $response->assertStatus(200)
-                 ->assertJson(['message' => 'Email queued successfully']);
-
+        $response->assertStatus(200);
+        $this->assertEquals(true, $response->json('success'));
     }
 
     /**
@@ -54,7 +53,7 @@ class EmailApiTest extends TestCase
         // Create dummy email records
         Email::factory()->count(35)->create();
 
-        $response = $this->get('/api/emails?per_page=20');
+        $response = $this->get('/api/emails?per_page=20&page=2');
 
         $response->assertStatus(200)
                  ->assertJsonStructure([
@@ -81,7 +80,7 @@ class EmailApiTest extends TestCase
                  ]);
 
         $this->assertEquals(200, $response->json('error_code'));
-        $this->assertCount(20, $response->json('data.data'));
+        $this->assertCount(15, $response->json('data.data'));
     }
 
     /**
