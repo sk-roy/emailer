@@ -106,7 +106,15 @@ class EmailController extends Controller
                 'message',
                 'attachment_filename',
                 'status',
-            ])->paginate($perPage)->toArray();
+                'created_at',
+                'updated_at'
+            ])
+            ->orderByDesc('updated_at')
+            ->orderByDesc('created_at')
+            ->paginate($perPage)
+            ->toArray();
+
+            $emails['timezone'] = config('app.timezone');
 
             $response->setData($emails);
             $response->setMessage('Email list retrieved successfully.');
