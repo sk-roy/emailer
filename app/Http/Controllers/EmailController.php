@@ -43,7 +43,7 @@ class EmailController extends Controller
                 'email' => 'required|email',
                 'message' => 'required|string',
                 'attachment' => 'nullable|string',
-                'attachment_filename' => 'required_with:attachment|string',
+                'attachment_filename' => 'required_with:attachment|nullable|string',
             ]);
 
             $data = $request->only(['subject', 'email', 'message', 'attachment', 'attachment_filename']);
