@@ -35,11 +35,11 @@ class SendEmailJob implements ShouldQueue
     {
         try {            
             Mail::to($this->data['email'])->send(new MailMessage($this->data));
-            $this->mail->update(['status' => 'sent']);
+            $this->mail->update(['status' => Email::STATUS_SENT]);
             Log::debug('Email job processed successfully', ['Email' => $this->data['email']]);
             
         } catch (\Exception $e) {
-            $this->mail->update(['status' => 'failed']);
+            $this->mail->update(['status' => Email::STATUS_FAILED]);
             Log::error('Error processing email job', [
                 'error' => $e->getMessage(),
                 'email' => $this->data['email'],

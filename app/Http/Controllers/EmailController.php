@@ -52,7 +52,7 @@ class EmailController extends Controller
                 'message' => $data['message'],
                 'attachment' => $data['attachment'] ?? null,
                 'attachment_filename' => $data['attachment_filename'] ?? null,
-                'status' => 'in-queue',
+                'status' => Email::STATUS_IN_QUEUE,
             ]);
 
             SendEmailJob::dispatch($mail, $data);
