@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('subject');
             $table->string('email');
             $table->text('message')->nullable();
+            $table->longText('attachment')->nullable();
             $table->string('attachment_filename')->nullable();
-            $table->string('status')->default('in-queue');
+            $table->enum('status', ['sent', 'failed', 'in-queue'])->default('in-queue');
             $table->timestamps();
         });
     }

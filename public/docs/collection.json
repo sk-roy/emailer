@@ -1,0 +1,120 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost:8000"
+        }
+    ],
+    "info": {
+        "name": "Emailer API Documentation",
+        "_postman_id": "12727ccd-5070-4524-9357-f86dc5f9967b",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "Send Email",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/emails",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/emails"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"subject\":\"\\\"Meeting Reminder\\\"\",\"email\":\"\\\"user@example.com\\\"\",\"message\":\"\\\"Don't forget our meeting tomorrow at 10 AM.\\\"\",\"attachment\":\"\\\"dGVzdCBhdHRhY2htZW50IGNvbnRlbnQ=\\\"\",\"attachment_filename\":\"\\\"file.pdf\\\"\"}"
+                        },
+                        "description": "Add an email to the queue for sending.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Email list with Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/emails",
+                            "query": [
+                                {
+                                    "key": "per_page",
+                                    "value": "15",
+                                    "description": "optional Number of emails to retrieve per page. Defaults to 10.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "13",
+                                    "description": "optional Number of emails to retrieve the specific page. Defaults to 1.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/emails?per_page=15&page=13"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieve a paginated list of emails.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"data\":{\"current_page\":13,\"data\":[],\"first_page_url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=1\",\"from\":null,\"last_page\":1,\"last_page_url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=1\",\"links\":[{\"url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=12\",\"label\":\"&laquo; Previous\",\"active\":false},{\"url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=1\",\"label\":\"1\",\"active\":false},{\"url\":null,\"label\":\"Next &raquo;\",\"active\":false}],\"next_page_url\":null,\"path\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails\",\"per_page\":15,\"prev_page_url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=12\",\"to\":null,\"total\":2},\"message\":\"Email list retrieved successfully.\",\"success\":true,\"error_code\":200}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "noauth"
+    }
+}

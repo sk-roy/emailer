@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Email;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,7 @@ class EmailFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'message' => $this->faker->paragraph(),
             'attachment_filename' => $this->faker->word() . '.pdf',
-            'status' => $this->faker->randomElement(['sent', 'pending', 'failed']),
+            'status' => $this->faker->randomElement(Email::statuses()),
         ];
     }
 }

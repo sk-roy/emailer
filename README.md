@@ -1,66 +1,50 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Setup Dev Environment:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1. Open Terminal and Go to project folder
+2. RUN `composer install`
+3. Update Database Connection in .env
+4. Update MAIL_* configs in .env
+5. RUN `php artisan migrate`
+6. RUN `php artisan test`
+8. RUN `php artisan queue:work`
+9. RUN `php artisan scribe:generate`
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Run the Application:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+RUN `php artisan serve` and test APIs. API documentations can be found in /docs/index.html
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Application Details:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+In this project, we have built an application with laravel 11 and PHP 8.3. There are two REST APIs built with following Details. In these APIs, we have added validation and wrote some logs which can be restructured based on Project. We tried to implement generic Response Model to send response of all APIs in same structure.  
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### API 01: SendEmail: 
 
-## Laravel Sponsors
+This API (POST api/emails) will take JSON request with email, subject, message, attachment_filename and attachment (BASE64). This request will be added to Database table named emails with status 'in-queue' and also added to Laravel Job Queue. Separate Queue processor will be running and continously process these JOBs from Queue. After processing the Queue, it will update the status of the email in DB table with success or failed status. 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+While sending email, we have used \GuzzleHttp\Psr7\MimeType::fromFilename() method to get the content type of the file from filename. 
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
 
-## Contributing
+### API 02: Get Email list with Status:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+This API (GET api/emails) will take per_page and page as JSON request and will send emails from DB table according to the request with Status column.
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## Tests: 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Under tests/Unit/EmailApiTest.php, Four (04) tests have been written for each of these 02 APIs. There are scopes to write more tests against these to increase code coverage.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Spent Time: 9.75 hrs
+1. Setup Laravel Application and SMTP for E-mail Configuration - 0.5 hour
+2. Design DB Schema and write migrations - 0.25 hours
+3. Write structures of APIs with Models, Controllers - 2 hours
+4. Get mime type from Base64 code - 2 hours
+4. Implement Sending Email Asynchronously (Job , Mailable class, view template, Update status after successful email sent) - 2 hours
+5. Integrate and Write Unit Tests (Two unit tests for each endpoints) - 2 hours
+6. Integrate Scribe and prepare APIs for correct documentation generation - 0.5 hrs
+7. Write Documentations: 0.5 hr
