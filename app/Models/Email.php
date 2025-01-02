@@ -9,6 +9,6 @@ class Email extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['subject', 'email', 'message', 'attachment_filename', 'status'];
+    protected $fillable = ['subject', 'email', 'message', 'attachment', 'attachment_filename', 'status'];
     protected $table = 'mail-logs';
 }

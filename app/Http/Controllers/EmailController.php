@@ -8,7 +8,6 @@ use App\Models\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Storage;
 
 
 /**
@@ -51,14 +50,10 @@ class EmailController extends Controller
                 'subject' => $data['subject'],
                 'email' => $data['email'],
                 'message' => $data['message'],
+                'attachment' => $data['attachment'] ?? null,
                 'attachment_filename' => $data['attachment_filename'] ?? null,
                 'status' => 'in-queue',
             ]);
-
-            if ($request->has('attachment')) {
-                $fileData = base64_decode($data['attachment']);
-                Storage::put( $data['attachment_filename'], $fileData);
-            }
 
             SendEmailJob::dispatch($mail, $data);
 
