@@ -9,8 +9,8 @@ servers:
 paths:
   /api/emails:
     post:
-      summary: 'Send an email'
-      operationId: sendAnEmail
+      summary: 'Send Email'
+      operationId: sendEmail
       description: 'Add an email to the queue for sending.'
       parameters: []
       responses: {  }
@@ -54,8 +54,8 @@ paths:
                 - message
       security: []
     get:
-      summary: 'Get email list'
-      operationId: getEmailList
+      summary: 'Get Email list with Status'
+      operationId: getEmailListWithStatus
       description: 'Retrieve a paginated list of emails.'
       parameters:
         -
@@ -73,12 +73,12 @@ paths:
           in: query
           name: page
           description: 'optional Number of emails to retrieve the specific page. Defaults to 1.'
-          example: 18
+          example: 17
           required: false
           schema:
             type: integer
             description: 'optional Number of emails to retrieve the specific page. Defaults to 1.'
-            example: 18
+            example: 17
             nullable: false
       responses:
         500:

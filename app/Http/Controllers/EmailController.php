@@ -8,6 +8,8 @@ use App\Models\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Storage;
+
 
 /**
  *  
@@ -37,7 +39,7 @@ class EmailController extends Controller
 
         try {
             $request->validate([
-                'subject' => 'string',
+                'subject' => 'required|string',
                 'email' => 'required|email',
                 'message' => 'required|string',
                 'attachment' => 'nullable|string',
@@ -46,7 +48,7 @@ class EmailController extends Controller
 
             $data = $request->only(['subject', 'email', 'message', 'attachment', 'attachment_filename']);
             $mail = Email::create([
-                'subject' => $data['subject'] ?? 'Untitled!!!',
+                'subject' => $data['subject'],
                 'email' => $data['email'],
                 'message' => $data['message'],
                 'attachment_filename' => $data['attachment_filename'] ?? null,
@@ -55,7 +57,7 @@ class EmailController extends Controller
 
             if ($request->has('attachment')) {
                 $fileData = base64_decode($data['attachment']);
-                $data['attachment_path'] = Storage::put('attachments', $fileData);
+                Storage::put( $data['attachment_filename'], $fileData);
             }
 
             SendEmailJob::dispatch($mail, $data);
@@ -108,7 +110,7 @@ class EmailController extends Controller
                 'message',
                 'attachment_filename',
                 'status',
-            ])->paginate($perPage);
+            ])->paginate($perPage)->toArray();
 
             $response->setData($emails);
             $response->setMessage('Email list retrieved successfully.');

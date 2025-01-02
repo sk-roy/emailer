@@ -10,6 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Facades\Storage;
 
 class MailMessage extends Mailable
 {
@@ -49,10 +50,11 @@ class MailMessage extends Mailable
     public function build()
     {
         if (isset($this->data['attachment'])) {
+            $type = \GuzzleHttp\Psr7\MimeType::fromFilename($this->data['attachment_filename']); 
             return $this->attachData(
                             base64_decode($this->data['attachment']),
                             $this->data['attachment_filename'],
-                            ['mime' => mime_content_type($this->data['attachment_filename'])]
+                            ['mime' => $type]
                         );
         }
         return ;

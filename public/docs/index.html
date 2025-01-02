@@ -76,10 +76,10 @@
                 </li>
                                     <ul id="tocify-subheader-endpoints" class="tocify-subheader">
                                                     <li class="tocify-item level-2" data-unique="endpoints-POSTapi-emails">
-                                <a href="#endpoints-POSTapi-emails">Send an email</a>
+                                <a href="#endpoints-POSTapi-emails">Send Email</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-emails">
-                                <a href="#endpoints-GETapi-emails">Get email list</a>
+                                <a href="#endpoints-GETapi-emails">Get Email list with Status</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -114,7 +114,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
     
 
-                                <h2 id="endpoints-POSTapi-emails">Send an email</h2>
+                                <h2 id="endpoints-POSTapi-emails">Send Email</h2>
 
 <p>
 </p>
@@ -339,7 +339,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-emails">Get email list</h2>
+                    <h2 id="endpoints-GETapi-emails">Get Email list with Status</h2>
 
 <p>
 </p>
@@ -357,7 +357,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 const params = {
     "per_page": "15",
-    "page": "18",
+    "page": "17",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -385,7 +385,7 @@ $response = $client-&gt;get(
         ],
         'query' =&gt; [
             'per_page' =&gt; '15',
-            'page' =&gt; '18',
+            'page' =&gt; '17',
         ],
     ]
 );
@@ -400,7 +400,7 @@ import json
 url = 'http://localhost:8000/api/emails'
 params = {
   'per_page': '15',
-  'page': '18',
+  'page': '17',
 }
 headers = {
   'Content-Type': 'application/json',
@@ -413,7 +413,7 @@ response.json()</code></pre></div>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/emails?per_page=15&amp;page=18" \
+    --get "http://localhost:8000/api/emails?per_page=15&amp;page=17" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -524,10 +524,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-emails"
-               value="18"
+               value="17"
                data-component="query">
     <br>
-<p>optional Number of emails to retrieve the specific page. Defaults to 1. Example: <code>18</code></p>
+<p>optional Number of emails to retrieve the specific page. Defaults to 1. Example: <code>17</code></p>
             </div>
                 </form>
 

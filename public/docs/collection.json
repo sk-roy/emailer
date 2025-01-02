@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Emailer API Documentation",
-        "_postman_id": "89fd5f6a-33fb-419d-a717-61414cf6391c",
+        "_postman_id": "b35127e7-adbc-41c1-b334-7bb092bca515",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -20,7 +20,7 @@
             "description": "",
             "item": [
                 {
-                    "name": "Send an email",
+                    "name": "Send Email",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -51,7 +51,7 @@
                     "response": []
                 },
                 {
-                    "name": "Get email list",
+                    "name": "Get Email list with Status",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -65,12 +65,12 @@
                                 },
                                 {
                                     "key": "page",
-                                    "value": "18",
+                                    "value": "17",
                                     "description": "optional Number of emails to retrieve the specific page. Defaults to 1.",
                                     "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/emails?per_page=15&page=18"
+                            "raw": "{{baseUrl}}\/api\/emails?per_page=15&page=17"
                         },
                         "method": "GET",
                         "header": [
