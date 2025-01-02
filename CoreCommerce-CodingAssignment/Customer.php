@@ -1,7 +1,5 @@
 <?php
 
-require_once('Constants.php');
-
 class Customer
 {
     /**

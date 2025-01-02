@@ -14,7 +14,7 @@ $MovieShop = new MovieShop();
 $MovieShop->addMovie(new Movie('Back to the Future', PriceCodes::CHILDRENS));
 $MovieShop->addMovie(new Movie('Office Space', PriceCodes::REGULAR));
 $MovieShop->addMovie(new Movie('The Big Lebowski', PriceCodes::NEW_RELEASE));
-$MovieShop->addMovie(new Movie('Pushpa 2', PriceCodes::BLOCKBUSTER));
+$MovieShop->addMovie(new Movie('Journey to the center of the Earth', PriceCodes::BLOCKBUSTER));
 
 $rental1 = new Rental($MovieShop->getMovies()[0], 4);
 $rental2 = new Rental($MovieShop->getMovies()[1], 3);
@@ -28,10 +28,8 @@ $customer->addRental($rental2);
 $customer->addRental($rental3);
 $customer->addRental($rental4);
 
-$customer2 = new Customer('Ross geller');
+$customer2 = new Customer('Ross Geller');
 
 echo $MovieShop->statement($customer);
 echo $MovieShop->htmlStatement($customer);
-
-
-//TODO: Generate Price Code factory to return pricecode class with DefaultPrice, PricePerDay and FreeRentedDays for Given PriceCode
+echo $MovieShop->htmlStatement($customer2);
