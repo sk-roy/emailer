@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendEmailJob;
+use App\Enums\StatusEnum;
 use App\Models\Email;
 use App\Models\ApiResponse;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class EmailController extends Controller
                 'email' => 'required|email',
                 'message' => 'required|string',
                 'attachment' => 'nullable|string',
-                'attachment_filename' => 'required_with:attachment|string',
+                'attachment_filename' => 'required_with:attachment|nullable|string',
             ]);
 
             $data = $request->only(['subject', 'email', 'message', 'attachment', 'attachment_filename']);
@@ -52,7 +53,7 @@ class EmailController extends Controller
                 'message' => $data['message'],
                 'attachment' => $data['attachment'] ?? null,
                 'attachment_filename' => $data['attachment_filename'] ?? null,
-                'status' => Email::STATUS_IN_QUEUE,
+                'status' => StatusEnum::STATUS_IN_QUEUE,
             ]);
 
             SendEmailJob::dispatch($mail, $data);
@@ -105,7 +106,15 @@ class EmailController extends Controller
                 'message',
                 'attachment_filename',
                 'status',
-            ])->paginate($perPage)->toArray();
+                'created_at',
+                'updated_at'
+            ])
+            ->orderByDesc('updated_at')
+            ->orderByDesc('created_at')
+            ->paginate($perPage)
+            ->toArray();
+
+            $emails['timezone'] = config('app.timezone');
 
             $response->setData($emails);
             $response->setMessage('Email list retrieved successfully.');
