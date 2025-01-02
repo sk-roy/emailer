@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Email;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +23,7 @@ class EmailFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'message' => $this->faker->paragraph(),
             'attachment_filename' => $this->faker->word() . '.pdf',
-            'status' => $this->faker->randomElement(Email::statuses()),
+            'status' => $this->faker->randomElement(StatusEnum::cases()),
         ];
     }
 }

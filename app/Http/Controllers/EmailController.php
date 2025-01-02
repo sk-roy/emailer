@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendEmailJob;
+use App\Enums\StatusEnum;
 use App\Models\Email;
 use App\Models\ApiResponse;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class EmailController extends Controller
                 'message' => $data['message'],
                 'attachment' => $data['attachment'] ?? null,
                 'attachment_filename' => $data['attachment_filename'] ?? null,
-                'status' => Email::STATUS_IN_QUEUE,
+                'status' => StatusEnum::STATUS_IN_QUEUE,
             ]);
 
             SendEmailJob::dispatch($mail, $data);
