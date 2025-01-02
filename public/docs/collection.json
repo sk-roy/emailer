@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Emailer API Documentation",
-        "_postman_id": "b35127e7-adbc-41c1-b334-7bb092bca515",
+        "_postman_id": "12727ccd-5070-4524-9357-f86dc5f9967b",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -65,12 +65,12 @@
                                 },
                                 {
                                     "key": "page",
-                                    "value": "17",
+                                    "value": "13",
                                     "description": "optional Number of emails to retrieve the specific page. Defaults to 1.",
                                     "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/emails?per_page=15&page=17"
+                            "raw": "{{baseUrl}}\/api\/emails?per_page=15&page=13"
                         },
                         "method": "GET",
                         "header": [
@@ -105,8 +105,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 500,
-                            "body": "{\n    \"message\": \"Server Error\"\n}",
+                            "code": 200,
+                            "body": "{\"data\":{\"current_page\":13,\"data\":[],\"first_page_url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=1\",\"from\":null,\"last_page\":1,\"last_page_url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=1\",\"links\":[{\"url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=12\",\"label\":\"&laquo; Previous\",\"active\":false},{\"url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=1\",\"label\":\"1\",\"active\":false},{\"url\":null,\"label\":\"Next &raquo;\",\"active\":false}],\"next_page_url\":null,\"path\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails\",\"per_page\":15,\"prev_page_url\":\"http:\\\/\\\/localhost:8000\\\/api\\\/emails?page=12\",\"to\":null,\"total\":2},\"message\":\"Email list retrieved successfully.\",\"success\":true,\"error_code\":200}",
                             "name": ""
                         }
                     ]

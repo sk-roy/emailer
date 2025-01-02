@@ -92,7 +92,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 1, 2025</li>
+        <li>Last updated: January 2, 2025</li>
     </ul>
 </div>
 
@@ -357,7 +357,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 const params = {
     "per_page": "15",
-    "page": "17",
+    "page": "13",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -385,7 +385,7 @@ $response = $client-&gt;get(
         ],
         'query' =&gt; [
             'per_page' =&gt; '15',
-            'page' =&gt; '17',
+            'page' =&gt; '13',
         ],
     ]
 );
@@ -400,7 +400,7 @@ import json
 url = 'http://localhost:8000/api/emails'
 params = {
   'per_page': '15',
-  'page': '17',
+  'page': '13',
 }
 headers = {
   'Content-Type': 'application/json',
@@ -413,7 +413,7 @@ response.json()</code></pre></div>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/emails?per_page=15&amp;page=17" \
+    --get "http://localhost:8000/api/emails?per_page=15&amp;page=13" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -421,7 +421,7 @@ response.json()</code></pre></div>
 
 <span id="example-responses-GETapi-emails">
             <blockquote>
-            <p>Example response (500):</p>
+            <p>Example response (200):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -433,7 +433,40 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Server Error&quot;
+    &quot;data&quot;: {
+        &quot;current_page&quot;: 13,
+        &quot;data&quot;: [],
+        &quot;first_page_url&quot;: &quot;http://localhost:8000/api/emails?page=1&quot;,
+        &quot;from&quot;: null,
+        &quot;last_page&quot;: 1,
+        &quot;last_page_url&quot;: &quot;http://localhost:8000/api/emails?page=1&quot;,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: &quot;http://localhost:8000/api/emails?page=12&quot;,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http://localhost:8000/api/emails?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
+        ],
+        &quot;next_page_url&quot;: null,
+        &quot;path&quot;: &quot;http://localhost:8000/api/emails&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;prev_page_url&quot;: &quot;http://localhost:8000/api/emails?page=12&quot;,
+        &quot;to&quot;: null,
+        &quot;total&quot;: 2
+    },
+    &quot;message&quot;: &quot;Email list retrieved successfully.&quot;,
+    &quot;success&quot;: true,
+    &quot;error_code&quot;: 200
 }</code>
  </pre>
     </span>
@@ -524,10 +557,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-emails"
-               value="17"
+               value="13"
                data-component="query">
     <br>
-<p>optional Number of emails to retrieve the specific page. Defaults to 1. Example: <code>17</code></p>
+<p>optional Number of emails to retrieve the specific page. Defaults to 1. Example: <code>13</code></p>
             </div>
                 </form>
 
