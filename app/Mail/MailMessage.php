@@ -11,20 +11,18 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class MailMessage extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
-
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
+    public function __construct(
+        public $data,
+    ) {}
 
     /**
      * Get the message envelope.
@@ -45,20 +43,6 @@ class MailMessage extends Mailable
             view: 'mail-message',
         );
     }
-   
-
-    public function build()
-    {
-        if (isset($this->data['attachment'])) {
-            $type = \GuzzleHttp\Psr7\MimeType::fromFilename($this->data['attachment_filename']); 
-            return $this->attachData(
-                            base64_decode($this->data['attachment']),
-                            $this->data['attachment_filename'],
-                            ['mime' => $type]
-                        );
-        }
-        return ;
-    }
 
     /**
      * Get the attachments for the message.
@@ -67,6 +51,14 @@ class MailMessage extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        if (isset($this->data['attachment'])) {
+            $type = \GuzzleHttp\Psr7\MimeType::fromFilename($this->data['attachment_filename']);       
+            return [
+                Attachment::fromData(fn () => base64_decode($this->data['attachment']), $this->data['attachment_filename'])
+                        ->withMime($type),
+            ];
+        } else {
+            return [];
+        }
     }
 }
