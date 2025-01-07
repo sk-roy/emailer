@@ -103,13 +103,15 @@ class EmailController extends Controller
             $orderBy  = $request->get('order_by', 'updated_at');
             $orderDirection  = $request->get('order_direction', 'desc');
 
-            $emails = Email::where('message', 'like', "%$search%")
-                        ->orWhere('subject', 'like', "%$search%")
-                        ->orWhere('email', 'like', "%$search%")
-                        ->orWhere('attachment_filename', 'like', "%$search%")
-                        ->orderBy($orderBy, $orderDirection)
-                        ->paginate($perPage)
-                        ->toArray();
+            $emails = Email::when($request->search, function ($query, $search) {
+                                $query->where('message', 'like', "%$search%")
+                                    ->orWhere('subject', 'like', "%$search%")
+                                    ->orWhere('email', 'like', "%$search%")
+                                    ->orWhere('attachment_filename', 'like', "%$search%");
+                            }) 
+                            ->orderBy($orderBy, $orderDirection)
+                            ->paginate($perPage)
+                            ->toArray();
 
             $emails['timezone'] = config('app.timezone');
 
