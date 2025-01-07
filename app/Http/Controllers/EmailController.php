@@ -99,6 +99,9 @@ class EmailController extends Controller
 
         try {
             $perPage = $request->get('per_page', 10);
+            $search  = $request->get('search', '');
+            $orderBy  = $request->get('order_by', 'updated_at');
+            $orderDirection  = $request->get('order_direction', 'desc');
 
             $emails = Email::select([
                 'subject',
@@ -109,8 +112,11 @@ class EmailController extends Controller
                 'created_at',
                 'updated_at'
             ])
-            ->orderByDesc('updated_at')
-            ->orderByDesc('created_at')
+            ->where('message', 'like', "%$search%")
+            ->orWhere('subject', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%")
+            ->orWhere('attachment_filename', 'like', "%$search%")
+            ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage)
             ->toArray();
 

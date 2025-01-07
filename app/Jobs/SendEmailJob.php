@@ -17,17 +17,13 @@ class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $mail;
-    protected $data;
-
     /**
      * Create a new job instance.
      */
-    public function __construct(Email $mail, array $data)
-    {
-        $this->mail = $mail;
-        $this->data = $data;
-    }
+    public function __construct(
+        protected Email $mail, 
+        protected array $data,
+    ) {}
 
     /**
      * Execute the job.
