@@ -103,22 +103,13 @@ class EmailController extends Controller
             $orderBy  = $request->get('order_by', 'updated_at');
             $orderDirection  = $request->get('order_direction', 'desc');
 
-            $emails = Email::select([
-                'subject',
-                'email',
-                'message',
-                'attachment_filename',
-                'status',
-                'created_at',
-                'updated_at'
-            ])
-            ->where('message', 'like', "%$search%")
-            ->orWhere('subject', 'like', "%$search%")
-            ->orWhere('email', 'like', "%$search%")
-            ->orWhere('attachment_filename', 'like', "%$search%")
-            ->orderBy($orderBy, $orderDirection)
-            ->paginate($perPage)
-            ->toArray();
+            $emails = Email::where('message', 'like', "%$search%")
+                        ->orWhere('subject', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%")
+                        ->orWhere('attachment_filename', 'like', "%$search%")
+                        ->orderBy($orderBy, $orderDirection)
+                        ->paginate($perPage)
+                        ->toArray();
 
             $emails['timezone'] = config('app.timezone');
 
@@ -127,7 +118,7 @@ class EmailController extends Controller
             $response->setSuccess(true);
             $response->setErrorCode(200);
 
-            Log::debug($response->getMessage(), ['per_page' => $perPage]);
+            Log::debug($response->getMessage());
         } catch (\Exception $e) {
             $response->setMessage('Failed to retrieve email list.');
             $response->setSuccess(false);
