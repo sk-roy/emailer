@@ -16,7 +16,7 @@
 
 ## API Documentation:
 
-RUN `php artisan scribe:generate`. API documentations can be found in /docs/index.html
+RUN `php artisan scribe:generate`. API documentations can be found in [/public/docs/index.html](https://github.com/sk-roy/emailer/blob/main/public/docs/index.html) or [here](https://rawcdn.githack.com/sk-roy/emailer/169f552e4cbfb060771965f7bb9097ad4e9c954b/public/docs/index.html).
 
 
 ## Docker
